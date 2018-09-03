@@ -1,7 +1,7 @@
 const fs = require('fs');
 const FTPS = require('ftps');
 
-const dataDir = __dirname + '../data/gsod';
+const dataDir = __dirname + '/../data/gsod';
 
 let ftps = new FTPS({
 	host: 'ftp.ncdc.noaa.gov',
@@ -9,7 +9,7 @@ let ftps = new FTPS({
 }).cd('pub/data/gsod');
 
 const firstYear = 1901;
-const currentYear = 2018;
+const currentYear = 1905;
 
 let files = [];
 
