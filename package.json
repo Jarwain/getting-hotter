@@ -1,0 +1,14 @@
+{
+  "name": "is-it-hot-or-just-me",
+  "version": "1.0.0",
+  "description": "Visualizing Temperature Trends",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ftps": "^1.1.1"
+  }
+}

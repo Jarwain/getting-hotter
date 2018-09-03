@@ -1,0 +1,40 @@
+###env
+header = {'token': 'bZlDBaKuZnmswWNkRMGVkXpFKYizLaxX'}
+baseUrl = 'https://www.ncdc.noaa.gov/cdo-web/api/v2/'
+###env
+
+get(baseUrl + 'datasets', headers=header, params={'limit': 200, 'datatypeid':'TAVG'})
+get(baseUrl + 'datatypes', headers=header, params={'limit': 200, 'datacategoryid':'TEMP'})
+
+
+get(baseUrl + 'locationcategories', headers=header,
+    params={'limit': 1000,
+        'datasetid': 'GSOM',
+        'datacategoryid': 'TEMP',
+    })
+
+get(baseUrl + 'locations', headers=header,
+    params={'limit': 1000,
+        'datasetid': 'GSOM',
+        'datacategoryid': 'TEMP',
+        'locationcategoryid':'ST'
+    })
+
+# Station by location
+get(baseUrl + 'stations', headers=header,
+    params={'limit': 100,
+        'datasetid': 'GSOM',
+        'datacategoryid': 'TEMP',
+        'locationid':'FIPS:25'
+    })
+
+# DATA
+# Can be by station or location
+get(baseUrl + 'data', headers=header,
+    params={
+        'datasetid': 'GSOM',
+        'limit': 1000,
+        'startdate':'2000-01-01',
+        'enddate':'2010-01-01',
+        'datatypeid':'TAVG'
+    })

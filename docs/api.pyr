@@ -1,0 +1,6 @@
+###env
+base_url = 'https://www.ncdc.noaa.gov/cdo-web/api/v2'
+token = bZlDBaKuZnmswWNkRMGVkXpFKYizLaxX
+###env
+
+get(base_url, headers)
