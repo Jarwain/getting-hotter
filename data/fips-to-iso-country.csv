@@ -1,6 +1,6 @@
 "FIPS 10-4","ISO 3166",Name
 AF,AF,Afghanistan
-AX,-,Akrotiri
+AX,,Akrotiri
 AL,AL,Albania
 AG,DZ,Algeria
 AQ,AS,"American Samoa"
@@ -65,7 +65,7 @@ UC,CW,Curacao
 CY,CY,Cyprus
 EZ,CZ,"Czech Republic"
 DA,DK,Denmark
-DX,-,Dhekelia
+DX,,Dhekelia
 DJ,DJ,Djibouti
 DO,DM,Dominica
 DR,DO,"Dominican Republic"
@@ -76,7 +76,7 @@ EK,GQ,"Equatorial Guinea"
 ER,ER,Eritrea
 EN,EE,Estonia
 ET,ET,Ethiopia
-PJ,-,"Etorofu, Habomai, Kunashiri, and Shikotan Islands"
+PJ,,"Etorofu, Habomai, Kunashiri, and Shikotan Islands"
 EU,RE,"Europa Island"
 FK,FK,"Falkland Islands (Islas Malvinas)"
 FO,FO,"Faroe Islands"
@@ -134,7 +134,7 @@ KQ,UM,"Kingman Reef"
 KR,KI,Kiribati
 KN,KP,"Korea, North"
 KS,KR,"Korea, South"
-KV,-,Kosovo
+KV,,Kosovo
 KU,KW,Kuwait
 KG,KG,Kyrgyzstan
 LA,LA,Laos
@@ -190,7 +190,7 @@ PS,PW,Palau
 LQ,UM,"Palmyra Atoll"
 PM,PA,Panama
 PP,PG,"Papua New Guinea"
-PF,-,"Paracel Islands"
+PF,,"Paracel Islands"
 PA,PY,Paraguay
 PE,PE,Peru
 RP,PH,Philippines
@@ -228,7 +228,7 @@ SF,ZA,"South Africa"
 SX,GS,"South Georgia and the Islands"
 OD,SS,South Sudan
 SP,ES,Spain
-PG,-,"Spratly Islands"
+PG,,"Spratly Islands"
 CE,LK,"Sri Lanka"
 SU,SD,Sudan
 NS,SR,Suriname
@@ -266,15 +266,15 @@ VE,VE,Venezuela
 VM,VN,Vietnam
 VI,VG,"Virgin Islands, British"
 VQ,VI,"Virgin Islands, U.S."
--,-,"Virgin Islands (UK)"
--,-,"Virgin Islands (US)"
+-,,"Virgin Islands (UK)"
+-,,"Virgin Islands (US)"
 WQ,UM,"Wake Island"
 WF,WF,"Wallis and Futuna"
 WE,PS,"West Bank"
 WI,EH,"Western Sahara"
--,-,"Western Samoa"
--,-,World
+-,,"Western Samoa"
+-,,World
 YM,YE,Yemen
--,-,Zaire
+-,,Zaire
 ZA,ZM,Zambia
 ZI,ZW,Zimbabwe
