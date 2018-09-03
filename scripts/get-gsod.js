@@ -1,7 +1,7 @@
 const fs = require('fs');
 const FTPS = require('ftps');
 
-const dataDir = '../data/gsod';
+const dataDir = __dirname + '../data/gsod';
 
 let ftps = new FTPS({
 	host: 'ftp.ncdc.noaa.gov',
