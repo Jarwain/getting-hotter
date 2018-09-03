@@ -1,5 +1,5 @@
+Name, FIPS, ISO
 "Afghanistan",AF,AF
-"Aland Islands",,AX
 "Albania",AL,AL
 "Algeria",AG,DZ
 "American Samoa",AQ,AS
@@ -25,7 +25,6 @@
 "Bermuda",BD,BM
 "Bhutan",BT,BT
 "Bolivia, Plurinational State Of",BL,BO
-"Bonaire, Sint Eustatius and Saba",,BQ
 "Bosnia and Herzegovina",BK,BA
 "Botswana",BC,BW
 "Bouvet Island",BV,BV
@@ -234,7 +233,6 @@
 "United Arab Emirates",AE,AE
 "United Kingdom",UK,GB
 "United States",US,US
-"United States Minor Outlying Islands",,UM
 "Uruguay",UY,UY
 "Uzbekistan",UZ,UZ
 "Vanuatu",NH,VU
