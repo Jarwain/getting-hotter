@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ftps": "^1.1.1"
-  }
+    "pg": "^7.4.3",
+    "tar": "^4.4.6",
+    "tar-stream": "^1.6.1"
+  },
+  "devDependencies": {}
 }
