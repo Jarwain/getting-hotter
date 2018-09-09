@@ -88,10 +88,9 @@ async function saveDay(day){
 	}
 }
 
-let count = 0;
 const opt = {
 	filter(path, entry){
-		return path.indexOf('.gz') !== -1 && count++ < 1;
+		return path.indexOf('.gz') !== -1;
 	}
 }
 function loadTar(tarball) {
@@ -142,13 +141,15 @@ function loadTarToDb(tarball){
 
 async function loadAllGsod(){
 	try {
+		console.log("Connecting to Postgresql");
 		await client.connect();
+		console.log("Connected!");
 		const dir = __dirname + '/../data/gsod/';
 		const files = fs.readdirSync(dir);
 		for(let i = 0; i < files.length; i++){
 			const file = files[i];
 			if(file.indexOf('.tar') !== -1){
-				console.log("Now Loading:", file);
+				console.log("Loading:", file);
 				await loadTarToDb(fs.createReadStream(dir+file));
 			}
 		}
