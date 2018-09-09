@@ -105,11 +105,20 @@ function loadTar(tarball) {
 function saveStation(data) {
 	return new Promise((resolve, reject) => {
 		const promises = [];
-		let day;
+		let first = true;
 		readLines(data)
 			.on('line', line => {
 				if(line.indexOf('STN') == -1){
-					day = dayFactory(line);
+					const day = dayFactory(line);
+					if(first === true){
+						first = day;
+						console.log(
+							'Saving Station:',
+							first.get('station'), 
+							'WBAN:',
+							first.get('wban')
+						);
+					}
 					promises.push(saveDay(day));
 				}
 			})
@@ -117,9 +126,9 @@ function saveStation(data) {
 				Promise.all(promises).then(val => {
 					console.log(
 						'Saved Station:',
-						day.get('station'), 
+						first.get('station'), 
 						'WBAN:',
-						day.get('wban')
+						first.get('wban')
 					);
 					resolve(val)
 				});
