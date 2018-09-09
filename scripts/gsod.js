@@ -5,8 +5,6 @@ const { Client } = require('pg');
 const readline = require('readline');
 const MiniPass = require('minipass');
 
-const dir = __dirname + '/../data/gsod/';
-
 function dayFactory(line) {
 	let result = new Map(Object.entries({
 			station: line.slice(0,6).trim(),
@@ -65,26 +63,35 @@ const client = new Client({
 	user: 'hotter',
 });
 
-async function store(line){
-	if(line.indexOf('STN') !== -1) return;
-	const day = dayFactory(line);
-	const fields = [...day.keys()];
-	const numbers = fields.map((e, i) => `$${i+1}`).toString();
-	const query = {
-		name: 'insert-day',
-		text: `INSERT INTO gsod (${fields.toString()}) VALUES (${numbers})`,
-		values: Array.from(day.values()),
-	}
+async function saveDay(day){
+	try {
+		const fields = [...day.keys()];
+		const numbers = fields.map((e, i) => `$${i+1}`).toString();
+		const query = {
+			name: 'insert-day',
+			text: `INSERT INTO gsod (${fields.toString()}) VALUES (${numbers})`,
+			values: Array.from(day.values()),
+		}
 
-	const res = await client.query(query);
-	console.log(line)
-	return res;
+		const res = await client.query(query);
+		/*console.log(
+			'Saved Station:',
+			day.get('station'), 
+			'WBAN:',
+			day.get('wban'), 
+			'Date:',
+			day.get('date')
+		);*/
+		return res;
+	} catch (err) {
+		console.log(err, day);
+	}
 }
 
 let count = 0;
 const opt = {
 	filter(path, entry){
-		return path.indexOf('.gz') !== -1 && count++ < 10;
+		return path.indexOf('.gz') !== -1 && count++ < 1;
 	}
 }
 function loadTar(tarball) {
@@ -96,30 +103,64 @@ function loadTar(tarball) {
 	return tarball.pipe(untar);
 }
 
-async function loadTarToDb(year){
+function saveStation(data) {
 	return new Promise((resolve, reject) => {
-		try {
-			const tarball = fs.createReadStream(`${dir}/gsod_${year}.tar`);
-			const promises = [];
-			client.connect();
-			
-			loadTar(tarball).on('data', data => {
-				readLines(data)
-					.on('line', line => {
-						promises.push(store(line));
-					})
-			}).on('finish', () => {
+		const promises = [];
+		let day;
+		readLines(data)
+			.on('line', line => {
+				if(line.indexOf('STN') == -1){
+					day = dayFactory(line);
+					promises.push(saveDay(day));
+				}
+			})
+			.on('close', () => {
 				Promise.all(promises).then(val => {
-					client.end()
-					resolve(val);
-				})
-			});
-		} catch (err) {
-			reject(err);
-		}
+					console.log(
+						'Saved Station:',
+						day.get('station'), 
+						'WBAN:',
+						day.get('wban')
+					);
+					resolve(val)
+				});
+			})
 	})
 }
 
-loadTarToDb(1935).then((val) => {
+function loadTarToDb(tarball){
+	return new Promise((resolve, reject) => {
+		const promises = [];
+		
+		loadTar(tarball).on('data', data => {
+			promises.push(saveStation(data));
+		}).on('finish', () => {
+			Promise.all(promises).then(resolve);
+		});
+	})
+}
+
+async function loadAllGsod(){
+	try {
+		await client.connect();
+		const dir = __dirname + '/../data/gsod/';
+		const files = fs.readdirSync(dir);
+		for(let i = 0; i < files.length; i++){
+			const file = files[i];
+			if(file.indexOf('.tar') !== -1){
+				console.log("Now Loading:", file);
+				await loadTarToDb(fs.createReadStream(dir+file));
+			}
+		}
+		await client.end();
+	} catch (err) {
+		console.log(err);
+	}
+}
+
+loadAllGsod();
+
+/*loadTarToDb(1935).then((val) => {
 	console.log("FINALL DONE");
 }).catch(console.log);
+*/
