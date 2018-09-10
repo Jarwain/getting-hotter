@@ -1,7 +1,7 @@
 const fs = require('fs');
 const tar = require('tar');
 const zlib = require('zlib');
-const { Client } = require('pg');
+const { Pool } = require('pg');
 const readline = require('readline');
 const MiniPass = require('minipass');
 
@@ -54,7 +54,7 @@ function readLines(stream) {
 }
 
 
-const client = new Client({
+const pool = new Pool({
 	host: 'localhost',
 	database: 'hotter',
 	user: 'hotter',
@@ -70,16 +70,7 @@ async function saveDay(day){
 			values: Array.from(day.values()),
 		}
 
-		const res = await client.query(query);
-		/*console.log(
-			'Saved Station:',
-			day.get('station'), 
-			'WBAN:',
-			day.get('wban'), 
-			'Date:',
-			day.get('date')
-		);*/
-		return res;
+		return await pool.query(query);
 	} catch (err) {
 		console.log(err, day);
 	}
@@ -151,6 +142,7 @@ function loadTarToDb(tarball){
 		loadTar(tarball).on('data', data => {
 			promises.push(saveStation(data));
 		}).on('finish', () => {
+			console.log('Station Count', promises.length);
 			Promise.all(promises).then(resolve);
 		});
 	})
@@ -158,9 +150,6 @@ function loadTarToDb(tarball){
 
 async function loadAllGsod(){
 	try {
-		console.log("Connecting to Postgresql");
-		await client.connect();
-		console.log("Connected!");
 		const dir = __dirname + '/../data/gsod/';
 		const files = fs.readdirSync(dir);
 		const promises = [];
@@ -168,12 +157,15 @@ async function loadAllGsod(){
 			const file = files[i];
 			if(file.indexOf('.tar') !== -1){
 				console.log("Loading:", file);
-				promises.push(loadTarToDb(fs.createReadStream(dir+file)));
+				await promises.push(loadTarToDb(fs.createReadStream(dir+file)));
 			}
 		}
-		await Promise.all(promises).then(() => {
-			client.end();
+		await Promise.all(promises).then(async () => {
+			console.log('Closing Pool');
+			await pool.end();
+			console.log('Pool has Closed');
 		})
+		console.log('Count:', count);
 	} catch (err) {
 		console.log(err);
 	}
