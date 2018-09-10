@@ -102,10 +102,13 @@ function loadTar(tarball) {
 	return tarball.pipe(untar);
 }
 
+let stationCount = 0;
+let stationDone = 0;
 function saveStation(data) {
 	return new Promise((resolve, reject) => {
 		const promises = [];
 		let first = true;
+		let currentStation = ++stationCount;
 		readLines(data)
 			.on('line', line => {
 				if(line.indexOf('STN') == -1){
@@ -116,7 +119,9 @@ function saveStation(data) {
 							'Saving Station:',
 							first.get('station'), 
 							'WBAN:',
-							first.get('wban')
+							first.get('wban'),
+							'ID:',
+							currentStation,
 						);
 					}
 					promises.push(saveDay(day));
@@ -128,7 +133,11 @@ function saveStation(data) {
 						'Saved Station:',
 						first.get('station'), 
 						'WBAN:',
-						first.get('wban')
+						first.get('wban'),
+						'ID:',
+						currentStation,
+						'Total:',
+						`${++stationDone}/${stationCount}`
 					);
 					resolve(val)
 				});
@@ -155,14 +164,17 @@ async function loadAllGsod(){
 		console.log("Connected!");
 		const dir = __dirname + '/../data/gsod/';
 		const files = fs.readdirSync(dir);
+		const promises = [];
 		for(let i = 0; i < files.length; i++){
 			const file = files[i];
 			if(file.indexOf('.tar') !== -1){
 				console.log("Loading:", file);
-				await loadTarToDb(fs.createReadStream(dir+file));
+				promises.push(loadTarToDb(fs.createReadStream(dir+file)));
 			}
 		}
-		await client.end();
+		await Promise.all(promises).then(() => {
+			client.end();
+		})
 	} catch (err) {
 		console.log(err);
 	}
