@@ -3,7 +3,6 @@ const tar = require('tar');
 const zlib = require('zlib');
 const { Pool } = require('pg');
 const readline = require('readline');
-const MiniPass = require('minipass');
 
 function dayFactory(line) {
 	let result = new Map(Object.entries({
