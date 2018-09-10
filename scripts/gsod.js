@@ -46,9 +46,6 @@ function dayFactory(line) {
 	return result;
 }
 
-function gunzip(entry){
-	return entry.pipe(new zlib.Gunzip())
-}
 
 function readLines(stream) {
 	return readline.createInterface({
@@ -88,19 +85,6 @@ async function saveDay(day){
 	}
 }
 
-const opt = {
-	filter(path, entry){
-		return path.indexOf('.gz') !== -1;
-	}
-}
-function loadTar(tarball) {
-	const untar = new tar.Parse(opt).on('entry', entry => {
-		const data = gunzip(entry).on('finish',  () => {
-				untar.emit('data', data);
-			});
-	});
-	return tarball.pipe(untar);
-}
 
 let stationCount = 0;
 let stationDone = 0;
@@ -143,6 +127,21 @@ function saveStation(data) {
 				});
 			})
 	})
+}
+
+function loadTar(tarball) {
+	const opt = {
+		filter(path, entry){
+			return path.indexOf('.gz') !== -1;
+		}
+	}
+
+	const untar = new tar.Parse(opt).on('entry', entry => {
+		const data = entry.pipe(zlib.createGunzip()).on('finish',  () => {
+				untar.emit('data', data);
+			});
+	});
+	return tarball.pipe(untar);
 }
 
 function loadTarToDb(tarball){
