@@ -119,29 +119,22 @@ function saveStation(data) {
 	})
 }
 
-function loadTar(tarball) {
-	const opt = {
-		filter(path, entry){
-			return path.indexOf('.gz') !== -1;
-		}
-	}
-
-	const untar = new tar.Parse(opt).on('entry', entry => {
-		const data = entry.pipe(zlib.createGunzip()).on('finish',  () => {
-				untar.emit('data', data);
-			});
-	});
-	return tarball.pipe(untar);
-}
-
 function loadTarToDb(tarball){
 	return new Promise((resolve, reject) => {
 		const promises = [];
-		
-		loadTar(tarball).on('data', data => {
+		const opt = {
+			filter(path, entry){
+				return path.indexOf('.gz') !== -1;
+			},
+			strict: true,
+		}
+
+		const untar = new tar.Parse(opt).on('entry', entry => {
+			const data = entry.pipe(zlib.createGunzip());
 			promises.push(saveStation(data));
-		}).on('finish', () => {
-			console.log('Station Count', promises.length);
+		});
+		
+		tarball.pipe(untar).on('finish', () => {
 			Promise.all(promises).then(resolve);
 		});
 	})
