@@ -164,7 +164,6 @@ async function loadAllGsod(){
 			await pool.end();
 			console.log('Pool has Closed');
 		})
-		console.log('Count:', count);
 	} catch (err) {
 		console.log(err);
 	}
