@@ -40,10 +40,12 @@ Originals can be found in `/data/original`. My updated versions will be in `/dat
 There are problems with the data, listed in isd-problems.pdf. Here's a link to the [original NOAA file](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-problems.pdf)
 
 ## References
-[NOAA FTP Server](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/)
-[isd-problems](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-problems.pdf)
-[country-list](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/country-list.txt)
-[fips-to-iso](https://www.geodatasource.com/resources/tutorials/international-country-code-fips-versus-iso-3166/)
-[isd-station](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt) (also available in csv)
-[GSOD](ftp://ftp.ncdc.noaa.gov/pub/data/gsod/)
-[GSOD Readme](ftp://ftp.ncdc.noaa.gov/pub/data/gsod/readme.txt)
+[NOAA FTP Server]: ftp://ftp.ncdc.noaa.gov/pub/data/noaa/
+[isd-problems]: ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-problems.pdf
+[country-list]: ftp://ftp.ncdc.noaa.gov/pub/data/noaa/country-list.txt
+[fips-to-iso]: https://www.geodatasource.com/resources/tutorials/international-country-code-fips-versus-iso-3166/
+[isd-station]: ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt
+also available in csv
+
+[GSOD]: ftp://ftp.ncdc.noaa.gov/pub/data/gsod/
+[GSOD Readme]: ftp://ftp.ncdc.noaa.gov/pub/data/gsod/readme.txt

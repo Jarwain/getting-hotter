@@ -89,14 +89,6 @@ function saveStation(data) {
 					const day = dayFactory(line);
 					if(first === true){
 						first = day;
-						console.log(
-							'Saving Station:',
-							first.get('station'), 
-							'WBAN:',
-							first.get('wban'),
-							'ID:',
-							currentStation,
-						);
 					}
 					promises.push(saveDay(day));
 				}
@@ -108,8 +100,6 @@ function saveStation(data) {
 						first.get('station'), 
 						'WBAN:',
 						first.get('wban'),
-						'ID:',
-						currentStation,
 						'Total:',
 						`${++stationDone}/${stationCount}`
 					);
