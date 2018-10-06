@@ -126,16 +126,20 @@ function loadTarToDb(tarball){
 	})
 }
 
-async function loadAllGsod(){
+async function loadAllGsod(start = null){
 	try {
 		const dir = __dirname + '/../data/gsod/';
 		const files = fs.readdirSync(dir);
 		for(let i = 0; i < files.length; i++){
 			const file = files[i];
 			if(file.indexOf('.tar') !== -1){
-				console.log("Saving", file);
-				await loadTarToDb(fs.createReadStream(dir+file));
-				console.log("Completed", file);
+				if(start && file.slice(5,-4) < start){
+					console.log("Skipping", file);
+				} else {
+					console.log("Saving", file);
+					await loadTarToDb(fs.createReadStream(dir+file));
+					console.log("Completed", file);
+				}
 			}
 		}
 		console.log('Closing Pool');
@@ -146,7 +150,12 @@ async function loadAllGsod(){
 	}
 }
 
-loadAllGsod();
+let startYear = null;
+if(process.argv.length > 2){
+	startYear = process.argv[2];
+}
+
+loadAllGsod(startYear);
 
 /*loadTarToDb(1935).then((val) => {
 	console.log("FINALL DONE");
