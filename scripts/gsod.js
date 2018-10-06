@@ -3,15 +3,12 @@ const tar = require('tar');
 const zlib = require('zlib');
 const { Pool } = require('pg');
 const readline = require('readline');
+const db = require('../config/database.json');
 
 // process.on('unhandledRejection', () => {});
 // process.on('rejectionHandled', () => {});
 
-const pool = new Pool({
-	host: 'localhost',
-	database: 'hotter',
-	user: 'hotter',
-});
+const pool = new Pool(db);
 
 function dayFactory(line) {
 	let result = new Map(Object.entries({
