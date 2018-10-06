@@ -1,5 +1,5 @@
 {
-	host: 'localhost',
-	database: 'hotter',
-	user: 'hotter',
+	"host": "localhost",
+	"database": "hotter",
+	"user": "hotter"
 }
