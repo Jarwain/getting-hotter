@@ -58,8 +58,8 @@ function readLines(stream) {
 		});
 }
 
-async function saveDay(day){
-	try{
+/*async */function saveDay(day){
+	/*try{*/
 		const fields = [...day.keys()];
 		const numbers = fields.map((e, i) => `$${i+1}`).toString();
 		const query = {
@@ -68,10 +68,10 @@ async function saveDay(day){
 			values: Array.from(day.values()),
 		}
 
-		return await pool.query(query);
-	} catch (err) {
+		return /*await */pool.query(query);
+	/*} catch (err) {
 		console.log(err);
-	}
+	}*/
 }
 
 
@@ -113,8 +113,14 @@ function loadTarToDb(tarball){
 			strict: true,
 		}
 
-		const untar = new tar.Parse(opt).on('entry', entry => {
+		let queue = 0;
+		const untar = new tar.Parse(opt).on('entry', async entry => {
 			stationCount++;
+			if(queue >= 10){
+				await Promise.all(promises);
+				queue = 0;
+			}
+			queue++;
 			const year = entry.path.slice(-10, -6);
 			const data = entry.pipe(zlib.createGunzip());
 			promises.push(saveStation(data, year));
