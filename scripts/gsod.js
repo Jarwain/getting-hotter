@@ -58,16 +58,20 @@ function readLines(stream) {
 		});
 }
 
-function saveDay(day){
-	const fields = [...day.keys()];
-	const numbers = fields.map((e, i) => `$${i+1}`).toString();
-	const query = {
-		name: 'insert-day',
-		text: `INSERT INTO gsod (${fields.toString()}) VALUES (${numbers})`,
-		values: Array.from(day.values()),
-	}
+async function saveDay(day){
+	try{
+		const fields = [...day.keys()];
+		const numbers = fields.map((e, i) => `$${i+1}`).toString();
+		const query = {
+			name: 'insert-day',
+			text: `INSERT INTO gsod (${fields.toString()}) VALUES (${numbers})`,
+			values: Array.from(day.values()),
+		}
 
-	return pool.query(query);
+		return await pool.query(query);
+	} catch (err) {
+		console.log(err);
+	}
 }
 
 
