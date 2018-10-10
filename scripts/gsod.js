@@ -58,20 +58,16 @@ function readLines(stream) {
 		});
 }
 
-/*async */function saveDay(day){
-	/*try{*/
-		const fields = [...day.keys()];
-		const numbers = fields.map((e, i) => `$${i+1}`).toString();
-		const query = {
-			name: 'insert-day',
-			text: `INSERT INTO gsod (${fields.toString()}) VALUES (${numbers})`,
-			values: Array.from(day.values()),
-		}
+function saveDay(day){
+	const fields = [...day.keys()];
+	const numbers = fields.map((e, i) => `$${i+1}`).toString();
+	const query = {
+		name: 'insert-day',
+		text: `INSERT INTO gsod (${fields.toString()}) VALUES (${numbers})`,
+		values: Array.from(day.values()),
+	}
 
-		return /*await */pool.query(query);
-	/*} catch (err) {
-		console.log(err);
-	}*/
+	return pool.query(query);
 }
 
 
@@ -114,9 +110,10 @@ function loadTarToDb(tarball){
 		}
 
 		let queue = 0;
+		const queueMax = 16;
 		const untar = new tar.Parse(opt).on('entry', async entry => {
 			stationCount++;
-			if(queue >= 10){
+			if(queue >= queueMax){
 				await Promise.all(promises);
 				queue = 0;
 			}
@@ -127,7 +124,6 @@ function loadTarToDb(tarball){
 		});
 		
 		tarball.pipe(untar).on('finish', () => {
-			console.log(`Saving ${stationCount} stations`);
 			Promise.all(promises).then(() => {
 				stationCount = stationDone = 0;
 				resolve();
